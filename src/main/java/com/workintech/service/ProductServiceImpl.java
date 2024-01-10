@@ -39,4 +39,13 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.save(product);
     }
 
+    @Override
+    public Product delete(long id) {
+        Optional<Product> productFound = productRepository.findById(id);
+        if (productFound.isPresent()) {
+            productRepository.delete(productFound.get());
+            return productFound.get();
+        }
+        throw new ProductException("Product not found with that id: " + id, HttpStatus.NOT_FOUND);
+    }
 }

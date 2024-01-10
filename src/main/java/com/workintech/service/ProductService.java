@@ -14,4 +14,6 @@ public interface ProductService {
 
     Product save(Product product);
 
+    Product delete(long id);
+
 }

@@ -30,10 +30,10 @@ public class Category {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Product> productList;
 
-    private void addProduct(Product product) {
+    public void addProduct(Product product) {
         if (productList == null) {
             productList = new ArrayList<>();
         }

@@ -1,7 +1,9 @@
 package com.workintech.service;
 
 import com.workintech.entity.Category;
+import com.workintech.exception.CategoryException;
 import com.workintech.repository.CategoryRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,7 +29,7 @@ public class CategoryServiceImpl implements CategoryService {
         if (optionalCategory.isPresent()) {
             return optionalCategory.get();
         }
-        throw new RuntimeException("Category not found with that id: " + id);
+        throw new CategoryException("Category not found with that id: " + id, HttpStatus.NOT_FOUND);
     }
 
     @Override
@@ -35,4 +37,13 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.save(category);
     }
 
+    @Override
+    public Category delete(long id) {
+        Optional<Category> categoryFound = categoryRepository.findById(id);
+        if (categoryFound.isPresent()) {
+            categoryRepository.delete(categoryFound.get());
+            return categoryFound.get();
+        }
+        throw new CategoryException("Category not found with that id: " + id, HttpStatus.NOT_FOUND);
+    }
 }

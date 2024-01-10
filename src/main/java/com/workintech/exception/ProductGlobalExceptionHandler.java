@@ -18,6 +18,13 @@ public class ProductGlobalExceptionHandler {
     }
 
     @ExceptionHandler
+    public ResponseEntity<ExceptionResponse> handleException(CategoryException categoryException) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(categoryException.getMessage(), categoryException.getHttpStatus().value(),
+                LocalDateTime.now());
+        return new ResponseEntity<>(exceptionResponse, categoryException.getHttpStatus());
+    }
+
+    @ExceptionHandler
     public ResponseEntity<ExceptionResponse> handleException(Exception exception) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 LocalDateTime.now());

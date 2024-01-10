@@ -1,9 +1,11 @@
 package com.workintech.controller;
 
+import com.workintech.dto.CategoryResponse;
 import com.workintech.entity.Category;
 import com.workintech.service.CategoryService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -19,18 +21,34 @@ public class CategoryController {
     }
 
     @GetMapping
-    public List<Category> getAllCategories() {
-        return categoryService.findAll();
+    public List<CategoryResponse> getAllCategories() {
+        List<Category> allCategories = categoryService.findAll();
+        List<CategoryResponse> categories = new ArrayList<>();
+        for (Category c : allCategories) {
+            categories.add(new CategoryResponse(c.getTitle(), c.getImg(), c.getRating(), c.getGender()));
+        }
+        return categories;
     }
 
     @GetMapping("/{id}")
-    public Category getCategoryById(@PathVariable long id) {
-        return categoryService.findById(id);
+    public CategoryResponse getCategoryById(@PathVariable long id) {
+        Category foundCategory = categoryService.findById(id);
+        return new CategoryResponse(foundCategory.getTitle(), foundCategory.getImg(),
+                foundCategory.getRating(), foundCategory.getGender());
     }
 
     @PostMapping
-    public Category createCategory(@RequestBody Category category) {
-        return categoryService.save(category);
+    public CategoryResponse createCategory(@RequestBody Category category) {
+        Category savedCategory = categoryService.save(category);
+        return new CategoryResponse(savedCategory.getTitle(), savedCategory.getImg(),
+                savedCategory.getRating(), savedCategory.getGender());
+    }
+
+    @DeleteMapping("/{id}")
+    public CategoryResponse deleteCategory(@PathVariable long id) {
+        Category removedCategory = categoryService.delete(id);
+        return new CategoryResponse(removedCategory.getTitle(), removedCategory.getImg(),
+                removedCategory.getRating(), removedCategory.getGender());
     }
 
 }
