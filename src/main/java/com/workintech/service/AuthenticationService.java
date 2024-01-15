@@ -40,7 +40,7 @@ public class AuthenticationService {
         if (!optionalRole.isPresent()) {
             Role roleUser = new Role();
             roleUser.setAuthority("customer");
-            roleList.add(roleUser);
+            roleList.add(roleRepository.save(roleUser));
         } else {
             roleList.add(optionalRole.get());
         }

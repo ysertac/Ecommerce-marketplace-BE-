@@ -1,8 +1,10 @@
 package com.workintech.controller;
 
+import com.workintech.dto.RegisterRequest;
 import com.workintech.entity.User;
 import com.workintech.service.AuthenticationService;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,7 +19,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public User register(User user) {
-        return authenticationService.register(user.getFullName(), user.getEmail(), user.getPassword());
+    public String register(@RequestBody RegisterRequest registerRequest) {
+        authenticationService.register(registerRequest.fullName(), registerRequest.email(), registerRequest.password());
+        return registerRequest.fullName();
     }
 }
