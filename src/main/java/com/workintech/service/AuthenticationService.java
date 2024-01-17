@@ -54,13 +54,13 @@ public class AuthenticationService {
         return userRepository.save(user);
     }
 
-    public User login(User user) {
-        Optional<User> optionalUser = userRepository.findByEmail(user.getEmail());
+    public User login(String email, String password) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
         if (optionalUser.isPresent()) {
             User foundUser = optionalUser.get();
-            boolean hasPasswordMatch = passwordEncoder.matches(foundUser.getPassword(), user.getPassword());
+            boolean hasPasswordMatch = passwordEncoder.matches(password, foundUser.getPassword());
             if (hasPasswordMatch) {
-                return user;
+                return foundUser;
             }
             throw new RuntimeException("Invalid user login");
         }
