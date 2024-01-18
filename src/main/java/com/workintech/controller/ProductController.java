@@ -6,6 +6,7 @@ import com.workintech.entity.Product;
 import com.workintech.service.CategoryService;
 import com.workintech.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -43,14 +44,14 @@ public class ProductController {
     }
 
     @PostMapping
-    public ProductResponse createProduct(@RequestBody Product product) {
+    public ProductResponse createProduct(@Validated @RequestBody Product product) {
         Product savedProduct = productService.save(product);
         return new ProductResponse(savedProduct.getName(), savedProduct.getDescription(), savedProduct.getRating(),
                 savedProduct.getPrice(), savedProduct.getStock(), savedProduct.getImage());
     }
 
     @PostMapping("/{id}")
-    public ProductResponse createProduct(@PathVariable long id, @RequestBody Product product) {
+    public ProductResponse createProduct(@PathVariable long id, @Validated @RequestBody Product product) {
         Category category = categoryService.findById(id);
         product.setCategory(category);
         category.addProduct(product);

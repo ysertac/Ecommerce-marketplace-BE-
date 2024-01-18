@@ -3,6 +3,7 @@ package com.workintech.controller;
 import com.workintech.dto.CategoryResponse;
 import com.workintech.entity.Category;
 import com.workintech.service.CategoryService;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    public CategoryResponse createCategory(@RequestBody Category category) {
+    public CategoryResponse createCategory(@Validated @RequestBody Category category) {
         Category savedCategory = categoryService.save(category);
         return new CategoryResponse(savedCategory.getTitle(), savedCategory.getImg(),
                 savedCategory.getRating(), savedCategory.getGender());
